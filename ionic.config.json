@@ -1,0 +1,8 @@
+{
+  "name": "Upswing",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular",
+  "id": "a895d037"
+}
