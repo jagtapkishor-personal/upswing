@@ -1,0 +1,31 @@
+<ion-content [fullscreen]="true">
+  <ion-grid>
+    <ion-row class="ion-justify-content-center">
+      <div class="text-center">
+        <p class="fs-3 fw-bold">Log In</p>
+      </div>
+      <ion-col size="12">
+        <form [formGroup]="loginForm">
+
+          <div class="mb-2">
+            <ion-input label="User Name" formControlName="username" label-placement="floating" fill="outline"
+              placeholder="Enter Mobile Number"></ion-input>
+          </div>
+          <div class="mb-2" style="position: relative;">
+            <ion-input label="Password" formControlName="password" label-placement="floating" [type]="passwordType"
+              fill="outline" placeholder="Enter Password"></ion-input>
+            <div style="position: absolute;top: 20px;right: 20px; z-index: 99;">
+
+              <ion-icon (click)="toggleShow()" *ngIf="showPassword" name="eye-outline">
+              </ion-icon>
+              <ion-icon (click)="toggleShow()" *ngIf="!showPassword" name="eye-off-outline">
+              </ion-icon>
+            </div>
+          </div>
+        </form>
+        <ion-button fill="solid" expand="block" size="default" (click)="login()">Log in</ion-button>
+
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

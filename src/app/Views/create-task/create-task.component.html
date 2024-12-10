@@ -1,0 +1,43 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button color="medium" (click)="cancel()">Cancel</ion-button>
+    </ion-buttons>
+    <ion-title>Create Task</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+
+
+        <form [formGroup]="taskForm">
+          <div class="mb-2 mt-2">
+            <ion-input label="Title" formControlName="title" type="text" label-placement="floating" fill="outline"
+              placeholder="Enter Title"></ion-input>
+          </div>
+          <div class="mb-2">
+            <ion-input label="Description" formControlName="description" type="text" label-placement="floating"
+              fill="outline" placeholder="Enter Description"></ion-input>
+          </div>
+          <div class="mb-2">
+            <ion-select label="Task Priority" formControlName="priority" label-placement="floating"
+              placeholder="Select Priority" fill="outline">
+              <ion-select-option value="low">Low</ion-select-option>
+              <ion-select-option value="medium">Medium</ion-select-option>
+              <ion-select-option value="high">High</ion-select-option>
+            </ion-select>
+          </div>
+
+          <div class="mb-2">
+            <ion-button fill="solid" color="primary" expand="block" size="default" (click)="createTask()">Create
+              Task</ion-button>
+
+          </div>
+        </form>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

@@ -1,0 +1,71 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Task List</ion-title>
+    <ion-buttons slot="end">
+      <ion-button fill="solid" color="primary" expand="block" size="default" (click)="openModal()">add Task</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ion-grid [fixed]="true" class="my-2" *ngIf="(tasks$ | async)?.length!= 0">
+    <ion-row class="ion-text-center">
+      <ion-col size="6">
+        <ion-select #status (change)="onFilter(status.value, priority.value)" label="Select Status"
+          label-placement="floating" placeholder="Select Status" fill="outline">
+          <ion-select-option value="All">All</ion-select-option>
+          <ion-select-option value="Pending">Pending</ion-select-option>
+          <ion-select-option value="Completed">Completed</ion-select-option>
+        </ion-select>
+      </ion-col>
+      <ion-col size="6">
+        <ion-select #priority (change)="onFilter(status.value, priority.value)" label="Select Priority"
+          label-placement="floating" placeholder="Select Priority" fill="outline">
+          <ion-select-option value="All">All</ion-select-option>
+          <ion-select-option value="Low">Low</ion-select-option>
+          <ion-select-option value="Medium">Medium</ion-select-option>
+          <ion-select-option value="High">High</ion-select-option>
+        </ion-select>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <div style="display: flex; justify-content:center; align-items: center; height: 90vh;"
+    *ngIf="(tasks$ | async)?.length === 0; else taskList">
+    <p>No tasks available. Create a new task!</p>
+  </div>
+  <ng-template #taskList>
+
+    <ion-grid class="m-0 p-0">
+      <ion-row>
+        <ion-col size="12" class="m-0 p-0" *ngFor="let task of tasks$ | async">
+          <ion-card>
+            <ion-card-header>
+              <ion-card-title>{{task.title | titlecase}}</ion-card-title>
+            </ion-card-header>
+            <ion-card-content>
+              {{ task.description | titlecase}}
+              <ion-grid [fixed]="true">
+                <ion-row class="ion-text-center">
+                  <ion-col><b>Status:</b>{{ task.status | titlecase}}</ion-col>
+                  <ion-col><b>Priority:</b>{{ task.priority | titlecase}}</ion-col>
+                </ion-row>
+              </ion-grid>
+              <p>Due Date: {{ task.dueDate | date: 'fullDate' }}</p>
+              <ion-grid>
+                <ion-row class="ion-text-center">
+                  <ion-col size="9"> <ion-button fill="solid" expand="block" size="default"
+                      (click)="onMarkCompleted(task.id)" [disabled]="task.status === 'Completed'">Mark as
+                      Completed</ion-button>
+                  </ion-col>
+                  <ion-col size="3"> <ion-button color="danger" fill="solid" expand="block" size="default"
+                      (click)="onDeleteTask(task.id)"><ion-icon name="trash-outline"></ion-icon></ion-button>
+                  </ion-col>
+                </ion-row>
+              </ion-grid>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ng-template>
+
+</ion-content>
