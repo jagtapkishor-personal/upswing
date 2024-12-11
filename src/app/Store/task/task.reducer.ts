@@ -23,8 +23,12 @@ export const taskReducer = createReducer(
       t.id === id ? { ...t, status: 'Completed' } : t
     ),
   })),
-  // on(TaskActions.filterTasks, (state, { status, priority }) => ({
-  //   ...state,
-  //   filter: { status: 'Pending', priority },
-  // }))
+  on(TaskActions.filterTasks, (state, { status, priority }) => ({
+    ...state,
+    filter: { status, priority },
+  })),
+  on(TaskActions.resetFilters, (state) => ({
+    ...state,
+    filter: { status: 'All', priority: 'All' }, // Reset filters to default
+  }))
 );

@@ -3,8 +3,8 @@ import { Task } from '../../Model/task.model';
 export interface TaskState {
   tasks: Task[];
   filter: {
-    status: 'All' | 'Pending' | 'Completed';
-    priority: 'All' | 'Low' | 'Medium' | 'High';
+    status: any;
+    priority: any;
   };
 }
 

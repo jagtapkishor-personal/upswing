@@ -6,6 +6,7 @@ import * as TaskActions from '../../Store/task/task.action';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ModalController } from '@ionic/angular';
 import { CreateTaskComponent } from '../create-task/create-task.component';
+import { selectFilteredTasks } from 'src/app/Store/task/task.selector';
 
 @Component({
   selector: 'app-list-page',
@@ -13,8 +14,9 @@ import { CreateTaskComponent } from '../create-task/create-task.component';
   styleUrls: ['./list-page.component.scss'],
 })
 export class ListPageComponent implements OnInit {
-
-
+  statusFilter: string = 'All';
+  priorityFilter: string = 'All';
+  isFilterApplied: boolean = false;
   constructor(
     private store: Store<{ task: TaskState }>,
     private modalCtrl: ModalController
@@ -25,21 +27,19 @@ export class ListPageComponent implements OnInit {
   ngOnInit() {
 
     console.log(this.tasks$);
-    this.onSubmit()
   }
 
 
-  tasks$ = this.store.select((state) => {
-    const { tasks, filter } = state.task;
-    return tasks.filter((task) =>
-      (filter.status === 'All' || task.status === filter.status) &&
-      (filter.priority === 'All' || task.priority === filter.priority)
-    );
-  });
+  // tasks$ = this.store.select((state) => {
+  //   const { tasks, filter } = state.task;
+  //   return tasks.filter((task) =>
+  //     (filter.status === 'All' || task.status === filter.status) &&
+  //     (filter.priority === 'All' || task.priority === filter.priority)
+  //   );
+  // });
 
-  onSubmit() {
+  tasks$ = this.store.select(selectFilteredTasks);
 
-  }
 
 
 
@@ -54,9 +54,17 @@ export class ListPageComponent implements OnInit {
 
   onMarkCompleted(id: number) {
     this.store.dispatch(TaskActions.markTaskCompleted({ id }));
+    this.clearFilter()
   }
 
-  onFilter(status: string, priority: string) {
+
+
+
+  onFilter(status: string = 'All', priority: string = 'All') {
+    console.log('Filter values:', status, priority);
+    this.isFilterApplied = true;
+    this.statusFilter = status;
+    this.priorityFilter = priority;
     this.store.dispatch(TaskActions.filterTasks({ status, priority }));
   }
 
@@ -67,7 +75,9 @@ export class ListPageComponent implements OnInit {
       backdropDismiss: false,
 
     });
-    modal.present();
+    await modal.present();
+    this.clearFilter()
+
 
     const { data, role } = await modal.onWillDismiss();
     console.log(data, role);
@@ -75,6 +85,15 @@ export class ListPageComponent implements OnInit {
     if (role === 'confirm') {
 
     }
+  }
+
+  clearFilter() {
+
+    this.statusFilter = 'All';
+    this.priorityFilter = 'All';
+    this.isFilterApplied = false;
+    this.store.dispatch(TaskActions.resetFilters());
+
   }
 
 }

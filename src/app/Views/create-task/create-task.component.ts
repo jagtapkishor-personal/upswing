@@ -18,8 +18,8 @@ export class CreateTaskComponent implements OnInit {
     private store: Store<{ task: TaskState }>
   ) {
     this.taskForm = this.fb.group({
-      title: ['task a', [Validators.required]],
-      description: ['desc b', [Validators.required]],
+      title: ['', [Validators.required, Validators.minLength(2)]],
+      description: ['', [Validators.required, Validators.minLength(2)]],
       status: [''],
       priority: ['', [Validators.required]],
     });

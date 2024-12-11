@@ -7,19 +7,23 @@
   </ion-toolbar>
 </ion-header>
 <ion-content>
-  <ion-grid [fixed]="true" class="my-2" *ngIf="(tasks$ | async)?.length!= 0">
+  <ion-grid [fixed]="true" class="my-2" *ngIf="(tasks$ | async)?.length!= 0 || isFilterApplied">
     <ion-row class="ion-text-center">
       <ion-col size="6">
-        <ion-select #status (change)="onFilter(status.value, priority.value)" label="Select Status"
-          label-placement="floating" placeholder="Select Status" fill="outline">
+        <ion-select [(ngModel)]="statusFilter" (ionChange)="onFilter(statusFilter, priorityFilter)"
+          label="Select Status" label-placement="floating" placeholder="Select Status" fill="outline">
+          <!-- <ion-select #status (ionChange)="onFilter(status.value, priority.value)" label="Select Status"
+          label-placement="floating" placeholder="Select Status" fill="outline"> -->
           <ion-select-option value="All">All</ion-select-option>
           <ion-select-option value="Pending">Pending</ion-select-option>
           <ion-select-option value="Completed">Completed</ion-select-option>
         </ion-select>
       </ion-col>
       <ion-col size="6">
-        <ion-select #priority (change)="onFilter(status.value, priority.value)" label="Select Priority"
-          label-placement="floating" placeholder="Select Priority" fill="outline">
+        <ion-select [(ngModel)]="priorityFilter" (ionChange)="onFilter(statusFilter, priorityFilter)"
+          label="Select Priority" label-placement="floating" placeholder="Select Priority" fill="outline">
+          <!-- <ion-select #priority (ionChange)="onFilter(status.value, priority.value)" label="Select Priority"
+          label-placement="floating" placeholder="Select Priority" fill="outline"> -->
           <ion-select-option value="All">All</ion-select-option>
           <ion-select-option value="Low">Low</ion-select-option>
           <ion-select-option value="Medium">Medium</ion-select-option>
@@ -28,8 +32,12 @@
       </ion-col>
     </ion-row>
   </ion-grid>
-  <div style="display: flex; justify-content:center; align-items: center; height: 90vh;"
+  <div style="display: flex; justify-content:center; align-items: center; height: 90vh; flex-direction: column;"
     *ngIf="(tasks$ | async)?.length === 0; else taskList">
+    <ion-button *ngIf="isFilterApplied" color="danger" fill="solid" expand="block" size="default"
+      (click)="clearFilter()">Clear Filter</ion-button>
+    <br>
+
     <p>No tasks available. Create a new task!</p>
   </div>
   <ng-template #taskList>
